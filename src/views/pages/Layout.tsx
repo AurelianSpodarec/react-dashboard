@@ -1,20 +1,26 @@
 import { BrowserRouter } from "react-router-dom";
 import CustomRoutes from "routes/CustomRoutes";
 
+import { Footer, Header, Navigation } from "./components";
+
 function Layout() {
     return (
-        <BrowserRouter>
-        <div>
-            
-            <header>
-                Header
-            </header>
+        <BrowserRouter>  
+        <div className="flex h-full overflow-hidden">
 
-                <CustomRoutes />
+            <div>
+                <Navigation />
+            </div>
 
-            <footer>
-                Footer
-            </footer>
+            <div className="flex w-full h-full flex-col h-screen">
+                <Header />
+
+                <main>
+                    <CustomRoutes />
+                </main>
+
+                <Footer />
+            </div>
 
         </div>
         </BrowserRouter>
