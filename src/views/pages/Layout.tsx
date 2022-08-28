@@ -12,7 +12,7 @@ function Layout() {
                 <Navigation />
             </div>
 
-            <div className="flex w-full h-full flex-col h-screen">
+            <div className="flex w-full h-full flex-col h-screen bg-gray-900">
                 <Header />
 
                 <main>

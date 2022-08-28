@@ -1,5 +1,4 @@
-import config from './../config_spotify';
-import getToken from 'services/spotify/requests/getToken';
+import config from '../config';
 
 import {
     getResponseContent,
@@ -12,7 +11,7 @@ const SpotifyRequest = async function (endpoint, method, data) {
     const params = { locale: 'gb_GB', country: 'GB' };
     const token = await getToken();
 
-    const response = await fetch(`${config.API_URL}/${config.API_VERSION}/${endpoint}`, {
+    const response = await fetch(`${config.API_URL}/${endpoint}`, {
         method,
         "credentials": 'omit',
         "headers": {
