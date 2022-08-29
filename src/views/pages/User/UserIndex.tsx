@@ -1,33 +1,40 @@
 import { useEffect, useState } from "react";
-import { Container, Heading } from "views/molecules";
-import useSWR from 'swr';
 
+import { IUser } from "interface/User";
 import { useFetchUsers } from "services/dummyjson/api/user";
+import { Container, Heading } from "views/molecules";
 
-interface UserProps {
-    id: number;
-    firstName: string;
+
+interface RenderUserProps {
+    item: IUser,
+}
+
+function RenderUser({item}:RenderUserProps) {
+    const { id, firstName } = item;
+    // TODO: Split each 'td' into its own component 
+    return (
+        <tr>
+            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-md font-medium text-gray-200 sm:pl-6">{id}</td>
+            <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{firstName}</td>
+            <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">lindsay.walton@example.com</td>
+            <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">Member</td>
+            <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-md font-medium sm:pr-6">
+                <a href="#" className="text-indigo-600 hover:text-indigo-900">Edit<span className="sr-only">, Lindsay Walton</span></a>
+            </td>
+        </tr>
+    )
+}
+
+function RenderUserList() {
+    const users = useFetchUsers()
+    if(users.isLoading) return
+    return users.data.users.map((item:IUser, index:number) => {
+        return <RenderUser key={index} item={item} />
+    })
 }
 
 function UserIndex() {
-    const users = useFetchUsers()
-    console.log("UserIndexPage", users)
-   
-    function renderUser(props:UserProps) {
-        const { id, firstName } = props;
-
-        return (
-            <tr>
-                <td className="whitespace-nowrap py-4 pl-4 pr-3 text-md font-medium text-gray-200 sm:pl-6">{firstName}</td>
-                <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">Front-end Developer</td>
-                <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">lindsay.walton@example.com</td>
-                <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">Member</td>
-                <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-md font-medium sm:pr-6">
-                    <a href="#" className="text-indigo-600 hover:text-indigo-900">Edit<span className="sr-only">, Lindsay Walton</span></a>
-                </td>
-            </tr>
-        )
-    }
+    
 
     return (
         <div>
@@ -58,7 +65,7 @@ function UserIndex() {
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                     
-                    
+                    <RenderUserList />
                     
                 </tbody>
                 </table>
