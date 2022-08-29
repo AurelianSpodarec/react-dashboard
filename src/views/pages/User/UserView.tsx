@@ -1,4 +1,5 @@
 import { useEffect } from "react"; 
+import { useFetchUser } from "services/dummyjson/api/user";
 
 interface UserProps {
     id: number;
@@ -6,20 +7,11 @@ interface UserProps {
 }
 
 
+
 function UserView() {
-
-    function fetchUsers() {
-        const users = fetch('https://dummyjson.com/users')
-            .then(res => res.json())
-            .then(console.log);
-        
-        console.log(users)
-    }
-
-    useEffect(() => {
-        fetchUsers()
-    }, [])
-
+    const user = useFetchUser(1)
+    
+    console.log(user.data)
     return (
         <div>
 
