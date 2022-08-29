@@ -2,7 +2,7 @@ import { useRoutes } from "react-router-dom";
 
 import NotFound from "views/pages/NotFound";
 import Home from "views/pages/Home";
-import Users from "views/pages/Users/Users";
+import UserIndex from "views/pages/User/UserIndex";
 
 function CustomRoutes() {
     let routes = useRoutes([
@@ -16,7 +16,7 @@ function CustomRoutes() {
         },
         {
             path: "/users",
-            element: <Users />
+            element: <UserIndex />
         }
     ]);
 
