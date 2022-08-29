@@ -1,32 +1,120 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Container, Heading } from "views/molecules";
+import useSWR from 'swr';
+import getResponseContent from "services/requests/getResponseContent";
+import RequestError from "services/requests/RequestError";
 
 interface UserProps {
     id: number;
     firstName: string;
 }
 
+// const SpotifyRequest = async function (endpoint, method, data) {
+    
+     
 
+//     const response = await fetch(`${config.API_URL}/${config.API_VERSION}/${endpoint}`, {
+//         method,
+//         "credentials": 'omit',
+//         "headers": {
+//             'Authorization': `${token}`,
+//             'Content-Type': 'application/json',
+//             'Accept': 'application/json',
+//         },
+//         // "params": params,
+//         body: JSON.stringify(data)
+//     })
+
+//     const content = await getResponseContent(response)
+
+//     if (response.ok) return content;
+//     throw new RequestError(response.statusText, response.status, content)
+// }
+
+// export default SpotifyRequest;
+
+var configURL = "https://dummyjson.com"
+
+// async function dummyRequest(endpoint:any, method:any, reqData?:any) {
+//     const response = await fetch(`${configURL}/${endpoint}`, {
+//         method,
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Accept': 'application/json'
+//         },
+//         body: JSON.stringify(reqData)
+//     })
+
+//     const content = await getResponseContent(response)
+//     console.log("Hii")
+//     const a = useSWR(`${configURL}/${endpoint}`, content)
+//     console.log("useSWR", a)
+//     // never reaches below this code
+    
+//     // if(response.ok) {
+//     //     return {
+//     //         data: res.data,
+//     //         isLoading: !res.error && !res.data,
+//     //         isError: res.error
+//     //     }
+//     // }
+    
+//     // throw new RequestError(response.statusText, response.status, content);
+// }
+ 
+
+//  async function useFetchUsers() {
+ 
+//         console.log("feth top")
+//         const  a = await DummyRequest('users', 'GET')
+//         console.log("fetchusers", a)
+//     //     console.log("fetch fet", a)
+//     //     // setData(a)
+//     //     // return a
+//     // }
+//     // useEffect(() => {
+//     //     fet()
+//     // }, [])
+
+//     // return data;
+// }
+ 
+async function fetcher(endpoint:any, method:string, reqData?:object) {
+    const response = await fetch(`${configURL}/${endpoint}`, {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(reqData)
+    })
+    const content = await getResponseContent(response)
+
+    if (response.ok) return content;
+    throw new RequestError(response.statusText, response.status, content)
+}
+  
+function useFetch (endpoint:string, method:string, reqData?:object) {
+    const { data, error } = useSWR(endpoint, endpoint => fetcher(endpoint, method, reqData))
+
+    return {
+        data: data,
+        isLoading: !error && !data,
+        isError: error
+    }
+} 
+
+
+function useFetchUsers() {
+    return useFetch('users', 'GET')
+} 
 
 
 
 function UserIndex() {
-
-    // Decouple this
-    function fetchUsers() {
-        const users = fetch('https://dummyjson.com/users')
-            .then(res => res.json())
-            .then(console.log);
-        
-        console.log(users)
-    }
-
-    useEffect(() => {
-        fetchUsers()
-    }, [])
-
-
-
+    const users = useFetchUsers()
+    console.log("UserIndexPage", users)
+   
     function renderUser(props:UserProps) {
         const { id, firstName } = props;
 
