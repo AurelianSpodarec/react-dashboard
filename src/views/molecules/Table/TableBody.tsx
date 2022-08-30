@@ -1,8 +1,8 @@
-function TableBody() {
+function TableBody({children}:any) {
     return (
-        <div>
-
-        </div>
+        <tbody className="divide-y divide-gray-200">
+           {children}
+        </tbody>
     )
 }
 

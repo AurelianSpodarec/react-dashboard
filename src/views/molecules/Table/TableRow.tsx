@@ -1,8 +1,8 @@
-function TableRow() {
+function TableRow({children}:any) {
     return (
-        <div>
-
-        </div>
+        <tr>
+            {children}
+        </tr>
     )
 }
 
