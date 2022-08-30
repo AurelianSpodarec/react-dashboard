@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 
 import { IUser } from "interface/User";
 import { useFetchUsers } from "services/dummyjson/api/user";
-import { Container, Heading } from "views/molecules";
+import { Container, Heading, Pagination } from "views/molecules";
 import { Table, TableHead, TableBody, TableRow, TableCell } from "views/molecules/Table";
-
 
 
 interface RenderUserProps {
@@ -18,14 +17,6 @@ function ErrorFallback({errorMessage}:any) {
         <p>Something went wrong:</p>
         <pre>{errorMessage}</pre>
     </div>
-    )
-}
-
-function Spinner() {
-    return (
-        <div>
-            <h1>Loading...</h1>
-        </div>
     )
 }
 
@@ -62,14 +53,14 @@ function TableUserBody({data}:any) {
 }
 
 function UserIndex() {
-    const users = useFetchUsers()
+    const users = useFetchUsers({limit: 20})
     console.log(users)
     return (
         <div>
             <Heading title="Users" />
 
             <Container>
-            <div className="bg-gray-800 p-8">
+            <div className="rounded-md border-2 border-gray-700 bg-gray-800 p-8">
 
                 <div className="flex justify-between">
                     <div>
@@ -110,12 +101,11 @@ function UserIndex() {
                     </TableHead>
                 
                     <TableBody>
-                        <TableUserBody data={users} />
+                        <TableUserBody data={users}/>
                     </TableBody>
                 </Table>
 
-
-                {/* <Pagination /> */}
+                <Pagination data={users}/>
 
             </div>
             </Container>    
