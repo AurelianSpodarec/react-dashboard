@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { IUser } from "interface/User";
 import { useFetchUsers } from "services/dummyjson/api/user";
 import { Container, Heading } from "views/molecules";
+import { Link } from "react-router-dom";
 
 
 interface RenderUserProps {
@@ -10,9 +11,9 @@ interface RenderUserProps {
 }
 
 function RenderUser({item}:RenderUserProps) {
-
     // TODO: Split each 'td' into its own component 
     return (
+            <Link to={`/user/${item.id}`} className="block w-full">
         <tr>
             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-md font-medium text-gray-200 sm:pl-6">{item.id}</td>
             <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{item.firstName}</td>
@@ -22,6 +23,7 @@ function RenderUser({item}:RenderUserProps) {
                 <a href="#" className="text-indigo-600 hover:text-indigo-900">Edit<span className="sr-only">, Lindsay Walton</span></a>
             </td>
         </tr>
+        </Link>
     )
 }
 
