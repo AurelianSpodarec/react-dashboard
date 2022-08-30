@@ -11,11 +11,9 @@ function UserView() {
     const { id }:any = useParams();
     const user = useFetchUser(id)
     
+    if(user.isError) return <>404</>
     if(user.isLoading) return <>spinner</>
-    // error
-    // below success
-
-    console.log(user.data)
+    
     const { image, firstName, birthDate } = user.data;
     return (
         <div>

@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 function Navigation() {
     return (
         <aside className="w-[270px] bg-gray-800 h-screen">
@@ -8,10 +10,16 @@ function Navigation() {
 
             <nav className=" h-full">
                 <ul role="list">
-                    <li>Admin</li>
-                    <ul>
-                        <li>Aomwthing</li>
-                    </ul>
+                    <li>
+                        <span>Admin</span>
+                        <ul>
+                            <li>
+                                <NavLink to="/users">
+                                    Users
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
 

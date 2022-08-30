@@ -28,4 +28,4 @@ export function useDummyJsonFetch (endpoint:string, method:string, reqData?:obje
         isLoading: !error && !data,
         isError: error
     }
-} 
+}
