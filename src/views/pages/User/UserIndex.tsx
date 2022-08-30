@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Children, useEffect, useState } from "react";
 
 import { IUser } from "interface/User";
 import { useFetchUsers } from "services/dummyjson/api/user";
@@ -27,17 +27,15 @@ function Spinner() {
     )
 }
 
-function RenderTableFallback(data:any, children:any) {
-    if(data.isLoading) {
-        return <Spinner />
-    } else if(data) {
-        return children
-    } else {
-        return <ErrorFallback />
-    }
+
+function RenderTableCell() {
+    return (
+        <td>Table Cell</td>
+    )
 }
 
 function RenderTableRow({item}:RenderUserProps) {
+    // Can add a skeleton to loading state
     return (
         <tr>
         {/* <Link to={`/user/${item.id}`} className="block w-full"> */}
@@ -54,16 +52,35 @@ function RenderTableRow({item}:RenderUserProps) {
     )
 }
 
-function RenderTableBody({users}:any) {
-    {console.log("users", users)}
+// function RenderTableFallback(props:any) {
+//     const { data, children } = props
+//     if(data.isLoading) {
+//         return <Spinner />
+//     } else if(data) {
+//         return children
+//     }
+//     return <ErrorFallback />
+// }
+
+// function TableUserList({data}) {
+//     return (
+//     <>
+//     { users.data.users.map((item:IUser, index:number) => {
+//         return <RenderTableRow key={index} item={item} />
+//     })}
+//     </>
+// }
+
+
+function TableUserList({data}:any) {
+    if(data.isLoading) return <>Loading</>
+    if(data.error) return <ErrorFallback />
     return (
-        <RenderTableFallback data={users}>
         <tbody className="divide-y divide-gray-200">
-            { users.data.users.map((item:IUser, index:number) => {
+            { data.data.users.map((item:IUser, index:number) => {
                 return <RenderTableRow key={index} item={item} />
             })}
         </tbody>
-        </RenderTableFallback>
     )
 }
 
@@ -73,6 +90,40 @@ function RenderResultInfo() {
     )
 }
 
+function Table({children}:any) {
+    return (
+        <table className="min-w-full divide-y divide-gray-300">
+            {children}
+        </table>
+    )
+}
+
+function TableHead({children}:any) {
+    return (
+        <thead>
+            {children}
+        </thead>
+    )
+}
+
+function TableBody({children}:any) {
+    return (
+        <tbody className="divide-y divide-gray-200">
+           {children}
+        </tbody>
+    )
+}
+
+
+function Pagination() {
+    return (
+        <div className="flex justify-between">
+            <RenderResultInfo />
+            <span>10 per page</span>
+            <span>Pagination numbers</span>
+        </div>
+    )
+}
 
 // TODO: Separate the above into its own fles
 function UserIndex() {
@@ -87,7 +138,7 @@ function UserIndex() {
 
                 <div className="flex justify-between">
                     <div>
-                        <RenderResultInfo />
+                        
                     </div>
                     
                     <div className="flex">
@@ -108,30 +159,29 @@ function UserIndex() {
                     </div>
                 </div>
 
-                <table className="min-w-full divide-y divide-gray-300">
-                <thead className="">
-                    <tr>
-                        <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-md font-semibold text-gray-200 sm:pl-6"></th>
-                        <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-md font-semibold text-gray-200 sm:pl-6">ID</th>
-                        <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-md font-semibold text-gray-200">Name</th>
-                        <th scope="col" className="px-3 py-3.5 text-left text-md font-semibold text-gray-200">Last Name</th>
-                        <th scope="col" className="px-3 py-3.5 text-left text-md font-semibold text-gray-200">Departament</th>
-                        <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                            <span className="sr-only">Edit</span>
-                        </th>
-                    </tr>
-                </thead>
-                
-                
-                    <RenderTableBody users={users} />
-             
-                </table>
 
-                <div className="flex justify-between">
-                    <RenderResultInfo />
-                    <span>10 per page</span>
-                    <span>Pagination numbers</span>
-                </div>
+                <Table>
+                    <TableHead>
+                        <tr>
+                            <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-md font-semibold text-gray-200 sm:pl-6"></th>
+                            <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-md font-semibold text-gray-200 sm:pl-6">ID</th>
+                            <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-md font-semibold text-gray-200">Name</th>
+                            <th scope="col" className="px-3 py-3.5 text-left text-md font-semibold text-gray-200">Last Name</th>
+                            <th scope="col" className="px-3 py-3.5 text-left text-md font-semibold text-gray-200">Departament</th>
+                            <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                                <span className="sr-only">Edit</span>
+                            </th>
+                        </tr>
+                    </TableHead>
+                
+                    <TableBody>
+                        <TableUserList data={users} />
+                    </TableBody>
+             
+                </Table>
+
+
+                <Pagination />
 
             </div>
             </Container>    
